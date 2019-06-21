@@ -1,0 +1,20 @@
+{
+  "alias": "7_temperature",
+  "name": "7-Temperature",
+  "descriptor": {
+    "type": "latest",
+    "sizeX": 7.5,
+    "sizeY": 3,
+    "resources": [
+      {
+        "url": "https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.5/linear/gauge.min.js"
+      }
+    ],
+    "templateHtml": "<div id=\"titoloTemp\">\r\n    Temperatura esterna\r\n</div>\r\n\r\n<div id=\"graficoTemp\">\r\n    <canvas id=\"canvas-id\"></canvas>\r\n</div>\r\n\r\n<div id=\"valoreTemp\">\r\n    °C\r\n</div>",
+    "templateCss": "#titoloTemp{\n    margin: auto;\n    width: 60%;\n    text-align:center;\n}\n\n#graficoTemp{\n    margin: auto;\n    width: 60%;\n    text-align:center;\n    height: 80%;\n}\n\n#valoreTemp{\n    margin: auto;\n    width: 60%;\n    text-align: center;\n}",
+    "controllerScript": "var gauge = null;\n\nself.onInit = function() {\n    \n    gauge = new LinearGauge({\n\t\trenderTo: 'canvas-id',\n\t\twidth: document.getElementById(\"graficoTemp\").style.width,\n\t\theight: document.getElementById(\"graficoTemp\").style.height,\n\t\tminValue: -10,\n\t\tstartAngle: 90,\n\t\tticksAngle: 180,\n\t\tvalueBox: false,\n\t\tvalueInt: 2,\n\t\tvalueDec: 2,\n\t\tmaxValue: 50,\n\t\tmajorTicks: [\n\t\t\t\"-10\",\n\t\t\t\"0\",\n\t\t\t\"10\",\n\t\t\t\"20\",\n\t\t\t\"30\",\n\t\t\t\"40\",\n\t\t\t\"50\"\n\t\t],\n\t\tminorTicks: 2,\n\t\tstrokeTicks: true,\n\t\thighlights: [\n\t\t\t{\n\t\t\t\t\"from\": 30,\n\t\t\t\t\"to\": 50,\n\t\t\t\t\"color\": \"rgba(200, 50, 50, .75)\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"from\": 10,\n\t\t\t\t\"to\": 30,\n\t\t\t\t\"color\": \"rgba(50, 150, 50, .75)\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"from\": -10,\n\t\t\t\t\"to\": 10,\n\t\t\t\t\"color\": \"rgba(200, 50, 50, .75)\"\n\t\t\t}\n\t\t],\n\t\tcolorPlate: \"#fff\",\n\t\tborderShadowWidth: 0,\n\t\tborders: false,\n\t\tneedleType: \"arrow\",\n\t\tneedleWidth: 10,\n\t\tneedleCircleSize: 7,\n\t\tneedleCircleOuter: true,\n\t\tneedleCircleInner: false,\n\t\tanimationDuration: 1000,\n\t\tanimationRule: \"linear\",\n\t\tbarWidth: 10,\n\t\tvalue: 20,\n\t\tcolorNeedle: \"yellow\"\n\t}).draw();\n\t\n\tself.onResize();\n}\n\nself.onDataUpdated = function() {\n    gauge.value = self.ctx.data[0].data[0][1];\n    document.getElementById(\"valoreTemp\").innerHTML = self.ctx.data[0].data[0][1].toFixed(2) + \" °C\";\n}\n\nself.onResize = function() {\n    \n    //Modify dimension of title and value value\n    document.getElementById(\"titoloTemp\").style.fontSize = document.getElementById(\"graficoTemp\").clientWidth/8 + \"px\";\n    document.getElementById(\"valoreTemp\").style.fontSize = document.getElementById(\"graficoTemp\").clientWidth/8 + \"px\";\n    \n    //Modify dimension of the gauge based on the width/height of the widget\n    try {\n        gauge.update({\n           width: document.getElementById(\"graficoTemp\").clientWidth,\n           height: document.getElementById(\"graficoTemp\").clientHeight\n        });\n    }\n    catch(err){\n        console.log(err.message);\n    }\n    \n}\n\nself.onDestroy = function() {\n}\n",
+    "settingsSchema": "{}",
+    "dataKeySettingsSchema": "{}\n",
+    "defaultConfig": "{\"datasources\":[{\"type\":\"function\",\"name\":\"function\",\"dataKeys\":[{\"name\":\"f(x)\",\"type\":\"function\",\"label\":\"Random\",\"color\":\"#2196f3\",\"settings\":{},\"_hash\":0.15479322438769105,\"funcBody\":\"var value = prevValue + Math.random() * 100 - 50;\\nvar multiplier = Math.pow(10, 2 || 0);\\nvar value = Math.round(value * multiplier) / multiplier;\\nif (value < -1000) {\\n\\tvalue = -1000;\\n} else if (value > 1000) {\\n\\tvalue = 1000;\\n}\\nreturn value;\"}]}],\"timewindow\":{\"realtime\":{\"timewindowMs\":60000}},\"showTitle\":true,\"backgroundColor\":\"#fff\",\"color\":\"rgba(0, 0, 0, 0.87)\",\"padding\":\"8px\",\"settings\":{},\"title\":\"7-Temperature\"}"
+  }
+}
